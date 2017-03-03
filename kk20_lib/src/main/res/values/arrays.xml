@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="paintsize">
+        <item>5</item>
+        <item>15</item>
+        <item>25</item>
+    </string-array>
+ 
+    <string-array name="paintcolor">
+        <item>RED</item>
+        <item>BLUE</item>
+        <item>BLACK</item>
+        <item>GREEN</item>
+        <item>YELLOW</item>
+        <item>CYAN</item>
+    </string-array>
+
+</resources>

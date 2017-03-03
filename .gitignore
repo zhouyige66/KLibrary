@@ -1,0 +1,7 @@
+*.iml
+*.iws
+.gradle/
+.idea/
+build/
+kk20_lib/build/
+local.properties

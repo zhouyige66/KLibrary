@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/id_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="标题"
+        android:textColor="#6c6c6c"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/id_tv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="6dp"
+        android:background="@drawable/selector_btn_default"
+        android:clickable="true"
+        android:drawableLeft="@drawable/selector_btn_back_img"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:onClick="goBack"
+        android:text="返回"
+        android:textColor="@color/selector_color_tv"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/id_tv_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:text="操作"
+        android:textColor="@color/selector_color_btn"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorDivider" />
+
+</RelativeLayout>
