@@ -115,7 +115,6 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
-        Log.e("log", centre + "");
 
         /**
          * 画进度百分比
@@ -124,16 +123,19 @@ public class RoundProgressBar extends View {
         paint.setColor(textColor);
         paint.setTextSize(textSize);
         paint.setTypeface(Typeface.DEFAULT_BOLD); //设置字体
-        int percent = (int) (((float) progress / (float) max) * 100);  //中间的进度百分比，先转换成float在进行除法运算，不然都为0
-        float textWidth = paint.measureText(percent + "%");   //测量字体宽度，我们需要根据字体的宽度设置在圆环中间
+        // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
+        int percent = (int) (((float) progress / (float) max) * 100);
+        // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
+        float textWidth = paint.measureText(percent + "%");
         if (textIsDisplayable && percent >= 0 && style == STROKE) {
-            Rect targetRect = new Rect(0, 0, getWidth(), getHeight());
+            Rect targetRect = new Rect(0, 0, getWidth(), getHeight());//目标矩阵
             Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+            //基准线计算公式：控件高度1/2+(文字高度1/2-fontMetrics.descent)
+            //fontMetrics.descent约等于fontMetrics.bottom
             int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
-            //下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
+            // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
             paint.setTextAlign(Paint.Align.CENTER);
             canvas.drawText(percent + "%", targetRect.centerX(), baseline, paint);
-//            canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize / 2, paint); //画出进度百分比
         }
 
         /**
