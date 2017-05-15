@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/dialog_loading_bg"
+        android:background="@drawable/bg_dialog_loading"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
@@ -17,7 +17,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:indeterminate="false"
-            android:indeterminateDrawable="@drawable/custom_progressbar_bg" />
+            android:indeterminateDrawable="@drawable/bg_progressbar_default" />
 
         <TextView
             android:id="@+id/tv_msg"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="正在处理..."
-            android:textColor="#666666"
+            android:textColor="#989697"
             android:textSize="22sp" />
     </LinearLayout>
 

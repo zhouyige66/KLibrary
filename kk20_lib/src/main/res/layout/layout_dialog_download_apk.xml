@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dialog_default_bg"
+        android:background="@drawable/bg_dialog_default"
         android:gravity="center"
         android:minWidth="250dp"
         android:orientation="vertical" >
@@ -24,7 +24,7 @@
         <ProgressBar
             android:id="@+id/pb"
             style="?android:attr/progressBarStyleHorizontal"
-            android:progressDrawable="@drawable/progressbar_custom_bg"
+            android:progressDrawable="@drawable/bg_h_progressbar_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

@@ -8,24 +8,24 @@ import android.widget.TextView;
 
 import cn.kk20.lib.R;
 
-public class LoadingDialog extends Dialog {
-    private TextView  mTextView;
+public class CommonLoadingDialog extends Dialog {
+    private TextView mTextView;
 
-    public LoadingDialog(Context context) {
+    public CommonLoadingDialog(Context context) {
         this(context, R.style.CustomDialog);
         init(context);
     }
 
-    public LoadingDialog(Context context, int theme) {
+    public CommonLoadingDialog(Context context, int theme) {
         super(context, theme);
 
         init(context);
     }
 
     public void init(Context c) {
-        View view = LayoutInflater.from(c).inflate(R.layout.layout_dialog_loading, null);
-        mTextView = (TextView) view.findViewById(R.id.tv_msg);
-        setContentView(view);
+        View dialogView = LayoutInflater.from(c).inflate(R.layout.layout_dialog_loading, null);
+        mTextView = (TextView) dialogView.findViewById(R.id.tv_msg);
+        setContentView(dialogView);
         setCanceledOnTouchOutside(false);
     }
 

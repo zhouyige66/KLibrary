@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 import cn.kk20.lib.R;
 import cn.kk20.lib.util.IToastUtil;
 import cn.kk20.lib.util.IHttpUtils;
-import cn.kk20.lib.widget.LoadingDialog;
-import cn.kk20.lib.widget.TipDialog;
+import cn.kk20.lib.widget.CommonLoadingDialog;
+import cn.kk20.lib.widget.CommonTipDialog;
 
 public class CheckUpdateUtil {
     private Context mContext;
@@ -43,7 +43,7 @@ public class CheckUpdateUtil {
     // 是否显示获取版本信息dialog
     private boolean isShowLoadingDialog = false;
     // 加载数据对话框
-    private LoadingDialog loadingDialog;
+    private CommonLoadingDialog loadingDialog;
 
     // 检查更新地址
     private String checkUpdateUrl = null;
@@ -76,7 +76,7 @@ public class CheckUpdateUtil {
 
     public void checkUpdate() {
         if (isShowLoadingDialog) {
-            loadingDialog = new LoadingDialog(mContext);
+            loadingDialog = new CommonLoadingDialog(mContext);
             loadingDialog.setMessage("正在获取最新版本信息...");
             loadingDialog.show();
         }
@@ -130,21 +130,21 @@ public class CheckUpdateUtil {
     }
 
     public void showUpdateDialog() {
-        TipDialog tipDialog = new TipDialog(mContext);
+        CommonTipDialog tipDialog = new CommonTipDialog(mContext);
         tipDialog.setTitle("检测到新版本：" + serverVersionName);
         tipDialog.setTitleVisiable();
         tipDialog.setMessage(serverVersionDescription);
-        tipDialog.setConfirmBtnText("立即更新");
-        tipDialog.setCancleBtnText("暂不更新");
-        tipDialog.setListener(new TipDialog.OnConfirmBtnClicked() {
+        tipDialog.setLeftBtnText("立即更新");
+        tipDialog.setRightBtnText("暂不更新");
+        tipDialog.setListener(new CommonTipDialog.OnBtnClickListener() {
 
             @Override
-            public void onConfirmBtnCliecked() {
+            public void onLeftBtnClickListener() {
                 downloadApk();
             }
 
             @Override
-            public void onCancleBtnClicked() {
+            public void onRightBtnClickListener() {
 
             }
         });

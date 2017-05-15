@@ -5,7 +5,7 @@
     android:background="#ffffff">
 
     <TextView
-        android:id="@+id/id_tv_title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -16,7 +16,7 @@
         android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/id_tv_back"
+        android:id="@+id/tv_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -25,7 +25,7 @@
         android:background="@drawable/selector_btn_default"
         android:clickable="true"
         android:drawableLeft="@drawable/selector_btn_back_img"
-        android:drawablePadding="5dp"
+        android:drawablePadding="3dp"
         android:gravity="center_vertical"
         android:onClick="goBack"
         android:text="返回"
@@ -33,7 +33,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/id_tv_operation"
+        android:id="@+id/tv_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -41,13 +41,6 @@
         android:layout_marginRight="6dp"
         android:text="操作"
         android:textColor="@color/selector_color_btn"
-        android:textSize="20sp"
-        android:visibility="gone" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorDivider" />
+        android:textSize="20sp" />
 
 </RelativeLayout>

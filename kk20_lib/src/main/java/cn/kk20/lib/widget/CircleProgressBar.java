@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
  */
 public class CircleProgressBar extends ProgressBar {
 
-
     public CircleProgressBar(Context context) {
         super(context);
     }
@@ -24,5 +23,7 @@ public class CircleProgressBar extends ProgressBar {
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+
 
 }

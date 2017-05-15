@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_default_bg"
+    android:background="@drawable/bg_dialog_default"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/id_tv_title"
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -16,7 +16,7 @@
         android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/id_tv_content"
+        android:id="@+id/tv_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -38,7 +38,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_cancle"
+            android:id="@+id/btn_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -52,7 +52,7 @@
             android:background="#cbcaca" />
 
         <Button
-            android:id="@+id/btn_confirm"
+            android:id="@+id/btn_right"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
