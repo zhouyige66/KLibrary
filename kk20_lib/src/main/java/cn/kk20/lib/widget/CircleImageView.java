@@ -38,6 +38,12 @@ import android.widget.ImageView;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 圆形ImageView
+ * @Editor kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 public class CircleImageView extends ImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;

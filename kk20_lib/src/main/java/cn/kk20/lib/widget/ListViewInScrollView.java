@@ -5,7 +5,10 @@ import android.util.AttributeSet;
 import android.widget.ListView;
 
 /**
- * Created by kk20 on 2016/3/24.
+ * @Description ScrollView中嵌套ListView
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
  */
 public class ListViewInScrollView extends ListView {
     public ListViewInScrollView(Context context) {

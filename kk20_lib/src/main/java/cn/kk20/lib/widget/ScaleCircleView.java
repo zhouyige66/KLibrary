@@ -10,7 +10,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by kk20 on 2016/3/25.
+ * @Description 简单圆形比例图
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
  */
 public class ScaleCircleView extends View {
     private Paint mPaint;

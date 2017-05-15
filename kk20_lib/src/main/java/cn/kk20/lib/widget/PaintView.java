@@ -29,6 +29,12 @@ import java.util.Iterator;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 简单绘画图
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 public class PaintView extends View {
 	private Canvas mCanvas;
 	private Path mPath;

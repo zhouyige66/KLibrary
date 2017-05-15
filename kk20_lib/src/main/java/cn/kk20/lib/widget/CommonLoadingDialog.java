@@ -8,6 +8,12 @@ import android.widget.TextView;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 通用版加载对话框
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 public class CommonLoadingDialog extends Dialog {
     private TextView mTextView;
 

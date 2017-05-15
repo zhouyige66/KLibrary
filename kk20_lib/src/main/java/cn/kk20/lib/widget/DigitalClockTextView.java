@@ -13,6 +13,12 @@ import java.util.Date;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 数字时钟TextView
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 public class DigitalClockTextView extends TextView {
     private String mDefaultFormat = "HH:mm:ss";
 

@@ -11,7 +11,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by kk20 on 2016/4/1.
+ * @Description 简单垂直柱形图
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
  */
 @SuppressLint("DrawAllocation")
 public class VerticalProgressBarView extends View {

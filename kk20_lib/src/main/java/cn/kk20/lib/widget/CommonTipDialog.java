@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 通用版提示框
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 public class CommonTipDialog extends Dialog {
     private TextView tv_title, tv_msg;
     private Button btn_left, btn_right;

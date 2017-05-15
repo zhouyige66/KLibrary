@@ -1,1 +1,1 @@
-include ':kk20_lib'
+include ':kk20_lib', ':testdemo'

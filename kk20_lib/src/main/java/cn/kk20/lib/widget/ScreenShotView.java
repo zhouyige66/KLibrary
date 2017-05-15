@@ -17,6 +17,12 @@ import android.view.View;
 
 import cn.kk20.lib.R;
 
+/**
+ * @Description 简单区域截图视图
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
+ */
 @SuppressLint("NewApi")
 public class ScreenShotView extends View {
     private int mWidth, mHeight;

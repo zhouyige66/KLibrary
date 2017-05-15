@@ -9,15 +9,16 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import cn.kk20.lib.R;
 
 /**
- * Created by kk20 on 2016/12/1.
+ * @Description 简单圆形ProgressBar
+ * @Author kk20
+ * @Date 2017/5/15
+ * @Version V1.0.0
  */
-
 public class RoundProgressBar extends View {
     public static final int STROKE = 0;
     public static final int FILL = 1;
@@ -125,14 +126,15 @@ public class RoundProgressBar extends View {
         paint.setTypeface(Typeface.DEFAULT_BOLD); //设置字体
         // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
         int percent = (int) (((float) progress / (float) max) * 100);
-        // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
-        float textWidth = paint.measureText(percent + "%");
         if (textIsDisplayable && percent >= 0 && style == STROKE) {
+            // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
+//            float textWidth = paint.measureText(percent + "%");
             Rect targetRect = new Rect(0, 0, getWidth(), getHeight());//目标矩阵
             Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
             //基准线计算公式：控件高度1/2+(文字高度1/2-fontMetrics.descent)
             //fontMetrics.descent约等于fontMetrics.bottom
-            int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
+//            int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
+            int baseline = (targetRect.bottom + targetRect.top - fontMetrics.ascent - fontMetrics.descent) / 2;
             // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
             paint.setTextAlign(Paint.Align.CENTER);
             canvas.drawText(percent + "%", targetRect.centerX(), baseline, paint);
