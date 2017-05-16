@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import org.apache.log4j.Logger;
 
@@ -23,23 +22,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import cn.kk20.lib.ActivityManager;
-
 public class CrashHandler implements UncaughtExceptionHandler {
-    private static final String TAG = "CrashHandler";
-    private static Logger logger = Logger.getLogger(CrashHandler.class);
+    private static Logger logger = Logger.getLogger(CrashHandler.class.getSimpleName());
+    private static CrashHandler instance;// CrashHandler实例
 
-    // 系统默认的UncaughtException处理类
-    private UncaughtExceptionHandler mDefaultHandler;
-    // CrashHandler实例
-    private static CrashHandler INSTANCE;
-    // 程序的Context对象
-    private Context mContext;
-    // 用来存储设备信息和异常信息
-    private Map<String, String> infos = new HashMap<String, String>();
-    // 用于格式化日期,作为日志文件名的一部分
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-
+    private Context mContext;// 程序的Context对象
+    private UncaughtExceptionHandler mDefaultHandler;// 系统默认的UncaughtException处理类
+    private Map<String, String> infos = new HashMap<String, String>();// 用来存储设备信息和异常信息
+    // 日志文件名的一部分
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+            Locale.getDefault());
     private HandleException handleException = null;
 
     /**
@@ -52,25 +44,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * 获取CrashHandler实例 ,单例模式
      */
     public static synchronized CrashHandler getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             synchronized (CrashHandler.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new CrashHandler();
+                if (instance == null) {
+                    instance = new CrashHandler();
                 }
             }
         }
-        return INSTANCE;
-    }
-
-    /**
-     * 初始化
-     */
-    public void init(Context context) {
-        mContext = context;
-        // 获取系统默认的UncaughtException处理器
-        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        // 设置该CrashHandler为程序的默认处理器
-        Thread.setDefaultUncaughtExceptionHandler(this);
+        return instance;
     }
 
     /**
@@ -82,16 +63,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
         }
-//		else {
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				Log.e(TAG, "error : ", e);
-//			}
-//			//退出程序
-//			android.os.Process.killProcess(android.os.Process.myPid());
-//			System.exit(1);
-//		}
     }
 
     /**
@@ -101,13 +72,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         if (ex == null) {
             return false;
         }
-
+        // 记录崩溃信息到日志
+        logger.error("程序崩溃了", ex);
         // 收集设备参数信息
         collectDeviceInfo(mContext);
         // 保存日志文件
-        String filename = saveCrashInfo2File(ex);
-        logger.error("程序崩溃了", ex);
-        ActivityManager.getInstance().finishAllActivity();
+        saveCrashInfo2File(ex);
         if (handleException != null) {
             handleException.handleException(ex);
         }
@@ -117,13 +87,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 收集设备参数信息
-     *
-     * @param ctx
      */
-    public void collectDeviceInfo(Context ctx) {
+    public void collectDeviceInfo(Context context) {
         try {
-            PackageManager pm = ctx.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
             if (pi != null) {
                 String versionName = pi.versionName == null ? "null" : pi.versionName;
                 String versionCode = pi.versionCode + "";
@@ -131,27 +99,21 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
-            logger.error(TAG, e);
-            Log.e(TAG, "an error occured when collect package info", e);
+            e.printStackTrace();
         }
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
                 infos.put(field.getName(), field.get(null).toString());
-                Log.d(TAG, field.getName() + " : " + field.get(null));
             } catch (Exception e) {
-                logger.error(TAG, e);
-                Log.e(TAG, "an error occured when collect crash info", e);
+                e.printStackTrace();
             }
         }
     }
 
     /**
      * 保存错误信息到文件中
-     *
-     * @param ex
-     * @return 返回文件名称
      */
     private String saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();
@@ -173,13 +135,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         String result = writer.toString();
         sb.append(result);
         try {
-            long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
-            String fileName = "crash-" + time + "-" + timestamp + ".log";
+            String fileName = "crash-" + time + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                        + mContext.getPackageName() + File.separator
-                        + "log" + File.separator;
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + File.separator + mContext.getPackageName()
+                        + File.separator + "log" + File.separator;
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -190,11 +151,29 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
             return fileName;
         } catch (Exception e) {
-            Log.e(TAG, "an error occured while writing file...", e);
+            e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * 初始化
+     *
+     * @param context
+     */
+    public void init(Context context) {
+        mContext = context;
+        // 获取系统默认的UncaughtException处理器
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        // 设置该CrashHandler为程序的默认处理器
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+    /**
+     * 设置异常处理
+     *
+     * @param handleException
+     */
     public void setHandleException(HandleException handleException) {
         this.handleException = handleException;
     }

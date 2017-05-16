@@ -25,7 +25,6 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
  */
 public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
     public static BaseApplication application;
-    protected Logger log;
     private Activity currentActivity;
 
     @Override
@@ -78,16 +77,13 @@ public class BaseApplication extends Application implements Application.Activity
         String path = IFileUtils.mkdir2SDCard(this.getPackageName() + File.separator + "log");
 
         LogConfigurator logConfigurator = new LogConfigurator();
-        logConfigurator.setFileName(path + "log.log");
+        logConfigurator.setFileName(path + "log.txt");
         logConfigurator.setRootLevel(Level.DEBUG);
         logConfigurator.setLevel("org.apache", Level.DEBUG);
         logConfigurator.setFilePattern("%d %-5p [%c{2}]-[%L] %m%n");
         logConfigurator.setMaxFileSize(1024 * 1024 * 2);
         logConfigurator.setImmediateFlush(true);
         logConfigurator.configure();
-
-        log = Logger.getLogger(getClass());
-        log.info("log4j init ok!");
     }
 
     private void initXUtils() {
