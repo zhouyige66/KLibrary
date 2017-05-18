@@ -1,4 +1,4 @@
-package cn.kk20.lib.util.permission;
+package cn.kk20.lib.permission;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

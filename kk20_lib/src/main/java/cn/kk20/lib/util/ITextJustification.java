@@ -7,9 +7,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by kk20 on 2016/12/8.
+ * 文本对其
  */
-
 public class ITextJustification {
 
     public static void justify(TextView textView, float contentWidth) {

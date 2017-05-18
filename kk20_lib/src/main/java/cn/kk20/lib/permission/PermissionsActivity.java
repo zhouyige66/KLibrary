@@ -1,4 +1,4 @@
-package cn.kk20.lib.util.permission;
+package cn.kk20.lib.permission;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 
 import cn.kk20.lib.R;
@@ -21,7 +22,7 @@ import cn.kk20.lib.base.BaseActivity;
  * Created by kk20 on 2016/11/15.
  */
 
-public class PermissionsActivity extends BaseActivity {
+public class PermissionsActivity extends AppCompatActivity {
     public static final int PERMISSIONS_GRANTED = 0; // 权限授权
     public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
 

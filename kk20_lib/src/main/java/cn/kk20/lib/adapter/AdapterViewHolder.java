@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Description:
- * Author: kk20
- * Email: 751664206@qq.com
- * Date: 2016/9/30
- * Modify: 2017/1/16 上午11:19
- * Version: V1.0.0
+ * @Description 
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
  */
 public class AdapterViewHolder {
     private SparseArray<View> mViews;

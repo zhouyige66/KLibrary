@@ -93,7 +93,7 @@ public class ActivityManager {
     /**
      * 退出应用程序
      */
-    public void AppExit() {
+    public void exit() {
         finishAllActivity();
         android.os.Process.killProcess(android.os.Process.myPid());
         System.gc();

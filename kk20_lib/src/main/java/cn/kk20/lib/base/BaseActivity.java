@@ -10,12 +10,10 @@ import org.xutils.x;
 import cn.kk20.lib.ActivityManager;
 
 /**
- * Description: Activity基类
- * Author: kk20
- * Email: 751664206@qq.com
- * Date: 2016/8/22
- * Modify: 2017/1/16 上午11:13
- * Version: V1.0.0
+ * @Description Activity基类
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
  */
 public class BaseActivity extends AutoLayoutActivity{
 

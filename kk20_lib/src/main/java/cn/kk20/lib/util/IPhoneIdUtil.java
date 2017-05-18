@@ -6,12 +6,8 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 /**
- * @author kk20
- * @version V1.0
- * @Description 获取android设备唯一标识
- * @date 2016/12/29 10:46
+ * 获取android设备唯一标识
  */
-
 public class IPhoneIdUtil {
 
     public static String getPhoneId(Context context) {

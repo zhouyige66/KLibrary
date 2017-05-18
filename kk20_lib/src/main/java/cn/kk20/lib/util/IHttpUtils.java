@@ -38,8 +38,8 @@ public class IHttpUtils {
      * @param callback 请求回调
      */
     public void doPost(RequestParams params, final String tipMsg, final IHttpRequestCallback callback) {
-        if (!INetworkUtils.isNetworkEnable(BaseApplication.application)) {
-            Toast.makeText(BaseApplication.application, "网络不可用", Toast.LENGTH_SHORT).show();
+        if (!INetworkUtils.isNetworkEnable(BaseApplication.mBaseApplication)) {
+            Toast.makeText(BaseApplication.mBaseApplication, "网络不可用", Toast.LENGTH_SHORT).show();
             return;
         }
 

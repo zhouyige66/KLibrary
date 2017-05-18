@@ -22,6 +22,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * @Description 自定义异常处理
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
+ */
 public class CrashHandler implements UncaughtExceptionHandler {
     private static Logger logger = Logger.getLogger(CrashHandler.class.getSimpleName());
     private static CrashHandler instance;// CrashHandler实例

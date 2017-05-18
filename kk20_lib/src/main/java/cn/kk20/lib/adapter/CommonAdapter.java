@@ -9,12 +9,10 @@ import android.widget.BaseAdapter;
 import java.util.List;
 
 /**
- * Description:
- * Author: kk20
- * Email: 751664206@qq.com
- * Date: 2016/9/30
- * Modify: 2017/1/16 上午11:19
- * Version: V1.0.0
+ * @Description 通用版适配器
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
     protected Context mContext;

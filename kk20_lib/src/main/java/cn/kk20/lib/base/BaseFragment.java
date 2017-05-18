@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import org.xutils.x;
 
 /**
- * Description: Fragment基类
- * Author: kk20
- * Email: 751664206@qq.com
- * Date: 2016/8/10
- * Modify: 2017/1/16 上午11:16
- * Version: V1.0.0
+ * @Description Fragment基类
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
  */
 public class BaseFragment extends Fragment {
     private boolean injected = false;

@@ -3,35 +3,36 @@ package cn.kk20.lib.base;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.xutils.x;
 
 import java.io.File;
 
+import cn.kk20.lib.exception.CrashHandler;
+import cn.kk20.lib.exception.CrashTipActivity;
 import cn.kk20.lib.util.IFileUtils;
-import cn.kk20.lib.util.permission.PermissionsChecker;
+import cn.kk20.lib.permission.PermissionsChecker;
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 /**
- * Description: Application基类
- * Author: kk20
- * Email: 751664206@qq.com
- * Date: 2017/8/10
- * Modify: 2017/1/16 上午11:14
- * Version: V1.0.0
+ * @Description Application基类
+ * @Author kk20
+ * @Date 2017/5/18
+ * @Version V1.0.0
  */
-public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
-    public static BaseApplication application;
+public abstract class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
+    public static BaseApplication mBaseApplication;
+    protected CrashHandler mCrashHandler;
     private Activity currentActivity;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        application = this;
+        mBaseApplication = this;
 
         PermissionsChecker permissionsChecker = new PermissionsChecker(this);
         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -96,7 +97,36 @@ public class BaseApplication extends Application implements Application.Activity
         initLog4j();
         // 初始化xUtils
         initXUtils();
+        // 程序异常处理
+        mCrashHandler = CrashHandler.getInstance();
+        mCrashHandler.init(this);
+        mCrashHandler.setHandleException(new CrashHandler.HandleException() {
+            @Override
+            public void handleException(Throwable ex) {
+                if (autoRestart()) {
+                    // 此处示例发生异常后，重新启动应用
+                    Intent intent = new Intent(BaseApplication.this, CrashTipActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }
+        });
     }
+
+    /**
+     * 是否自动重启
+     *
+     * @return true，自动重启；false，不自动重启
+     */
+    public abstract boolean autoRestart();
+
+    /**
+     * 重启进入页面
+     *
+     * @return
+     */
+    public abstract Class<?> getTargetActivity();
 
     public Activity getCurrentActivity() {
         return currentActivity;
