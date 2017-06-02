@@ -158,13 +158,13 @@ public class CheckUpdateUtil {
             return;
         }
 
-        final Dialog dialog = new Dialog(mContext, R.style.CustomDialog);
+        final Dialog dialog = new Dialog(mContext, R.style.StyleCustomDialog);
         View dialog_view = LayoutInflater.from(mContext).inflate(
                 R.layout.layout_dialog_download_apk, null);
-        Button btn_cancle_download = (Button) dialog_view
-                .findViewById(R.id.btn_cancle);
         Button btn_download_backup = (Button) dialog_view
-                .findViewById(R.id.btn_background);
+                .findViewById(R.id.btn_left);
+        Button btn_cancle_download = (Button) dialog_view
+                .findViewById(R.id.btn_right);
         dialog.setContentView(dialog_view);
         dialog.setCanceledOnTouchOutside(false);
 

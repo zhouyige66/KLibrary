@@ -30,9 +30,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'org.xutils:xutils:3.3.36'
-    compile 'com.zhy:autolayout:1.4.3'
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'org.xutils:xutils:3.3.36'
+    compile 'com.zhy:autolayout:1.4.3'
 }

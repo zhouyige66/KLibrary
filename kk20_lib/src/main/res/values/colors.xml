@@ -4,11 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorDivider">#DADADA</color>
-    <color name="colorTVPressed">#249cd3</color>
-    <color name="colorRBbg">#FCBF04</color>
-    <color name="colorRBbgNormal">#F2F2F2</color>
-    <color name="colorListViewItem">#a0ffffff</color>
+    <color name="colorDivider">@android:color/darker_gray</color>
 
-    <color name="gray_bg">#F2F2F2</color>
 </resources>

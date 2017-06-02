@@ -60,7 +60,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b2b2b2" />
+            android:background="@color/colorDivider" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,29 +68,29 @@
             android:gravity="center" >
 
             <Button
-                android:id="@+id/btn_cancle"
+                android:id="@+id/btn_left"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/selector_dialog_btn_l"
                 android:padding="5dp"
-                android:text="取消下载"
-                android:textColor="#1d87ff" />
+                android:text="后台下载"
+                android:textColor="@android:color/holo_red_light" />
 
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="#b2b2b2" />
+                android:background="@color/colorDivider" />
 
             <Button
-                android:id="@+id/btn_background"
+                android:id="@+id/btn_right"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/selector_dialog_btn_r"
                 android:padding="5dp"
-                android:text="后台下载"
-                android:textColor="#1d87ff" />
+                android:text="取消下载"
+                android:textColor="@color/colorDivider" />
         </LinearLayout>
     </LinearLayout>
 

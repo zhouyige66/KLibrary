@@ -18,7 +18,7 @@ public class CommonLoadingDialog extends Dialog {
     private TextView mTextView;
 
     public CommonLoadingDialog(Context context) {
-        this(context, R.style.CustomDialog);
+        this(context, R.style.StyleCustomDialog);
         init(context);
     }
 

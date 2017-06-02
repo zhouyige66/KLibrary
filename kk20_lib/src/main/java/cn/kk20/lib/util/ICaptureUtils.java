@@ -161,7 +161,7 @@ public class ICaptureUtils {
      * 截图图层隐藏
      */
     public interface CaptureHideListener {
-        public void captureHideCallbak();
+        void captureHideCallbak();
     }
 
 }

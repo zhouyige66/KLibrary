@@ -22,7 +22,7 @@ public class CommonTipDialog extends Dialog {
     private OnBtnClickListener listener;
 
     public CommonTipDialog(Context context) {
-        this(context, R.style.CustomDialog);
+        this(context, R.style.StyleCustomDialog);
         init(context);
     }
 

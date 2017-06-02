@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
-            android:background="#cbcaca" />
+            android:background="@color/colorDivider" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,13 +50,13 @@
                 android:background="@drawable/selector_dialog_btn_l"
                 android:gravity="center"
                 android:text="立刻重启"
-                android:textColor="#ff3333"
+                android:textColor="@android:color/holo_red_light"
                 android:textSize="18sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#cbcaca" />
+                android:background="@color/colorDivider" />
 
             <TextView
                 android:id="@+id/tv_exit"
@@ -66,7 +66,7 @@
                 android:background="@drawable/selector_dialog_btn_r"
                 android:gravity="center"
                 android:text="暂不重启"
-                android:textColor="#888888"
+                android:textColor="@color/colorDivider"
                 android:textSize="18sp" />
 
         </LinearLayout>

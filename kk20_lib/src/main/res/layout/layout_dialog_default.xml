@@ -43,8 +43,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/selector_dialog_btn_l"
-            android:text="取消"
-            android:textColor="@color/colorTVPressed" />
+            android:text="确定"
+            android:textColor="@android:color/holo_red_light" />
 
         <View
             android:layout_width="1dp"
@@ -57,8 +57,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/selector_dialog_btn_r"
-            android:text="确定"
-            android:textColor="@color/colorTVPressed" />
+            android:text="取消"
+            android:textColor="@color/colorDivider" />
     </LinearLayout>
 
 </LinearLayout>

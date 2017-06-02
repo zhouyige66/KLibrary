@@ -35,6 +35,10 @@ public class AdapterViewHolder {
         }
     }
 
+    public int getPosition(){
+        return mPosition;
+    }
+
     public View getConvertView() {
         return mConvertView;
     }
