@@ -17,7 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.kk20.lib.R;
-import cn.kk20.lib.widget.ScreenShotView;
+import cn.kk20.lib.view.ScreenShotView;
 
 /**
  * 截图演示工具类
