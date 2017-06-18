@@ -6,6 +6,8 @@ package cn.kk20.lib.mvp;
  * @Date 2017/5/10
  * @Version V1.0.0
  */
-public interface BaseView<T> {
+public interface BaseView<T> extends IBaseView {
+
     void setPresenter(T presenter);
+
 }

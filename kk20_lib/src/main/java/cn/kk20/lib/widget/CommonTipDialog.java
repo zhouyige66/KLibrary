@@ -2,6 +2,7 @@ package cn.kk20.lib.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +47,7 @@ public class CommonTipDialog extends Dialog {
             public void onClick(View v) {
                 CommonTipDialog.this.dismiss();
                 if (listener != null) {
-                    listener.onLeftBtnClickListener();
+                    listener.onLeftBtnClicked();
                 }
             }
         });
@@ -55,7 +56,7 @@ public class CommonTipDialog extends Dialog {
             public void onClick(View v) {
                 CommonTipDialog.this.dismiss();
                 if (listener != null) {
-                    listener.onRightBtnClickListener();
+                    listener.onRightBtnClicked();
                 }
             }
         });
@@ -64,16 +65,20 @@ public class CommonTipDialog extends Dialog {
         setCanceledOnTouchOutside(false);
     }
 
-    public void setTitleVisiable() {
-        tv_title.setVisibility(View.VISIBLE);
-    }
-
     public void setTitle(String title) {
         tv_title.setText(title);
     }
 
+    public void setTileTextColor(@ColorInt int color) {
+        tv_title.setTextColor(color);
+    }
+
     public void setMessage(String msg) {
         tv_msg.setText(msg);
+    }
+
+    public void setMessageTextColor(@ColorInt int color) {
+        tv_msg.setTextColor(color);
     }
 
     public void setLeftBtnText(String text) {
@@ -84,14 +89,22 @@ public class CommonTipDialog extends Dialog {
         btn_right.setText(text);
     }
 
-    public void setListener(OnBtnClickListener listener) {
+    public void setLeftBtnTextColor(@ColorInt int color) {
+        btn_left.setTextColor(color);
+    }
+
+    public void setRightBtnTextColor(@ColorInt int color) {
+        btn_right.setTextColor(color);
+    }
+
+    public void setOnBtnClickListener(OnBtnClickListener listener) {
         this.listener = listener;
     }
 
     public interface OnBtnClickListener {
-        void onLeftBtnClickListener();
+        void onLeftBtnClicked();
 
-        void onRightBtnClickListener();
+        void onRightBtnClicked();
     }
 
 }

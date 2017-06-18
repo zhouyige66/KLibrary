@@ -54,7 +54,7 @@ public class ActivityManager {
     /**
      * 获取栈顶Activity
      */
-    public Activity currentActivity() {
+    public Activity topActivity() {
         if (activityStack != null && activityStack.size() > 1) {
             return activityStack.lastElement();
         }

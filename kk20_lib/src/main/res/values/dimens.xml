@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="activity_root_layout_margin">16dp</dimen>
-    <dimen name="capture_tool_magin">30dp</dimen>
-</resources>

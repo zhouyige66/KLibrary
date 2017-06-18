@@ -52,8 +52,8 @@ public class CheckUpdateUtil {
     // 应用下载保存地址
     private String apkSavePath = null;
 
-    public CheckUpdateUtil(Context context, String checkUpdateUrl, String apkSavePath,boolean showLoadingDialog) {
-        super();
+    public CheckUpdateUtil(Context context, String checkUpdateUrl, String apkSavePath,
+                           boolean showLoadingDialog) {
         this.mContext = context;
 
         try {
@@ -66,11 +66,9 @@ public class CheckUpdateUtil {
         }
 
         this.checkUpdateUrl = checkUpdateUrl;
-        this.apkSavePath = ((Environment
-                .getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED)) ? Environment
-                .getExternalStorageDirectory().getAbsolutePath() : Environment
-                .getDataDirectory().getAbsolutePath()) + apkSavePath;
+        this.apkSavePath = ((Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) ?
+                Environment.getExternalStorageDirectory().getAbsolutePath() :
+                Environment.getDataDirectory().getAbsolutePath()) + apkSavePath;
         this.isShowLoadingDialog = showLoadingDialog;
     }
 
@@ -132,19 +130,18 @@ public class CheckUpdateUtil {
     public void showUpdateDialog() {
         CommonTipDialog tipDialog = new CommonTipDialog(mContext);
         tipDialog.setTitle("检测到新版本：" + serverVersionName);
-        tipDialog.setTitleVisiable();
         tipDialog.setMessage(serverVersionDescription);
         tipDialog.setLeftBtnText("立即更新");
         tipDialog.setRightBtnText("暂不更新");
-        tipDialog.setListener(new CommonTipDialog.OnBtnClickListener() {
+        tipDialog.setOnBtnClickListener(new CommonTipDialog.OnBtnClickListener() {
 
             @Override
-            public void onLeftBtnClickListener() {
+            public void onLeftBtnClicked() {
                 downloadApk();
             }
 
             @Override
-            public void onRightBtnClickListener() {
+            public void onRightBtnClicked() {
 
             }
         });

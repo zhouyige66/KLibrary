@@ -1,7 +1,5 @@
 package cn.kk20.lib.view;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +10,9 @@ import android.graphics.Path;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.os.Environment;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,10 +21,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
+import java.util.UUID;
 
 import cn.kk20.lib.R;
 
@@ -36,320 +34,334 @@ import cn.kk20.lib.R;
  * @Version V1.0.0
  */
 public class PaintView extends View {
-	private Canvas mCanvas;
-	private Path mPath;
-	private Paint mBitmapPaint;
-	private Bitmap mBitmap;
-	private Paint mPaint;
+    private static final float TOUCH_TOLERANCE = 4;
+    private static int[] paintColor = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK,
+            Color.YELLOW, Color.CYAN};
+    private static int[] paintSize = {5, 10, 15, 20, 25};
+    public static final int MODE_PEN = 0;
+    public static final int MODE_ERASER = 1;
 
-	private ArrayList<DrawPath> savePath;
-	private ArrayList<DrawPath> deletePath;
-	private DrawPath dp;
+    private Canvas mCanvas = null;
+    private Bitmap mBitmap = null;
+    private Path mPath = null;
+    private Paint mBitmapPaint, mPaint;
+    private Bitmap penBitmap, eraserBitmap;
+    private int mPaintColor = Color.RED;
+    private int mPaintStrokeWidth = 1;
+    private int mPaintMode = 0;
+    private int mBitmapWidth;
+    private int mBitmapHeight;
 
-	private float mX, mY;
-	private static final float TOUCH_TOLERANCE = 4;
+    private boolean hasMeasured = false;
+    private float mX, mY;
+    private boolean isMoving = false;
+    private DrawPath mDrawPath;
+    private ArrayList<DrawPath> savePathList;
+    private ArrayList<DrawPath> deletePathList;
 
-	private int bitmapWidth;
-	private int bitmapHeight;
-	private boolean isMoving = false;
+    public PaintView(Context c) {
+        this(c, null);
+    }
 
-	// 画笔颜色
-	private int[] paintColor = { Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN};
+    public PaintView(Context c, AttributeSet attrs) {
+        this(c, attrs, 0);
+    }
 
-	private int currentColor = Color.RED;
-	private int currentSize = 5;
-	private int currentStyle = 1;
+    public PaintView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
-	private boolean hasMeasured = false;
+        init();
+    }
 
-	public PaintView(Context c) {
-		super(c);
-		// 得到屏幕的分辨率
-		DisplayMetrics dm = new DisplayMetrics();
-		((Activity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-		bitmapWidth = dm.widthPixels;
-		bitmapHeight = dm.heightPixels - 2 * 45;
+        Log.i("kk20", "onMeasure量尺寸宽度：" + MeasureSpec.getSize(widthMeasureSpec));
+        Log.i("kk20", "onMeasure量尺寸高度：" + MeasureSpec.getSize(heightMeasureSpec));
+    }
 
-		initCanvas();
-		savePath = new ArrayList<DrawPath>();
-		deletePath = new ArrayList<DrawPath>();
-	}
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        // TODO Auto-generated method stub
+        super.onSizeChanged(w, h, oldw, oldh);
 
-	public PaintView(Context c, AttributeSet attrs) {
-		super(c, attrs);
-		// 得到屏幕的分辨率
-		// DisplayMetrics dm = new DisplayMetrics();
-		// ((Activity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
-		//
-		// bitmapWidth = dm.widthPixels;
-		// bitmapHeight = dm.heightPixels - 2 * 45;
-		//
-		// initCanvas();
-		savePath = new ArrayList<DrawPath>();
-		deletePath = new ArrayList<DrawPath>();
-	}
+        Log.i("kk20", "onSizeChanged量尺寸宽度：" + w);
+        Log.i("kk20", "onSizeChanged量尺寸高度：" + h);
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// TODO Auto-generated method stub
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // 暂时这样处理尺寸变化引起的画布重绘问题
+        if (!hasMeasured) {
+            hasMeasured = true;
+            mBitmapWidth = w;
+            mBitmapHeight = h;
+            reset();
+        }
+    }
 
-		Log.i("zzy", "onMeasure中：widthMeasureSpec==" + widthMeasureSpec);
-		Log.i("zzy", "onMeasure中：heightMeasureSpec==" + heightMeasureSpec);
-		Log.i("zzy", "onMeasure中：getMeasuredWidth()==" + getMeasuredWidth());
-		Log.i("zzy", "onMeasure中：getMeasuredHeight()==" + getMeasuredHeight());
-	}
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (mBitmap != null) {
+            canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint); // 显示旧的画布
+        }
+        if (mPath != null) {
+            if (mPaintMode == MODE_PEN) {
+                mPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_OVER));
+            } else {
+                mPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
+            }
+            // 实时的显示
+            canvas.drawPath(mPath, mPaint);
 
-	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		// TODO Auto-generated method stub
-		super.onSizeChanged(w, h, oldw, oldh);
+            // 移动时，显示画笔图标
+            if (this.isMoving) {
+                // 设置画笔的图标
+                if (mPaintMode == MODE_PEN) {
+                    canvas.drawBitmap(penBitmap, this.mX, this.mY - penBitmap.getHeight(),
+                            mBitmapPaint);
+                } else {
+                    canvas.drawBitmap(eraserBitmap, this.mX, this.mY - eraserBitmap.getHeight(),
+                            mBitmapPaint);
+                }
+            }
+        }
+    }
 
-		// 暂时这样处理尺寸变化引起的画布重绘问题
-		if (!hasMeasured) {
-			bitmapWidth = w;
-			bitmapHeight = h;
-			initCanvas();
-			hasMeasured = true;
-		}
-	}
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touch_start(x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                touch_move(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                touch_up(x, y);
+                break;
+            default:
+                break;
+        }
+        invalidate();
+        return true;
+    }
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint); // 显示旧的画布
-		if (mPath != null) {
-			if (currentStyle == 1) {
-				mPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_OVER));
-			} else {
-				mPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
-			}
-			// 实时的显示
-			canvas.drawPath(mPath, mPaint);
-			
-			// 移动时，显示画笔图标
-			if (this.isMoving) {
-				Bitmap pen =null;
-				// 设置画笔的图标
-				if (currentStyle == 1) {
-					pen = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_paint_pen);
-				} else {
-					pen = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_paint_eraser);
-				}
-				canvas.drawBitmap(pen, this.mX, this.mY - pen.getHeight(), new Paint(Paint.DITHER_FLAG));
-			}
-		}
-	}
+    private void init() {
+        // 关闭硬件加速(不然当模式为擦除模式时有问题)
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			mPath = new Path();
-			dp = new DrawPath();
-			dp.path = mPath;
-			dp.paint = mPaint;
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setColor(mPaintColor);
+        mPaint.setStrokeWidth(mPaintStrokeWidth);
 
-			touch_start(x, y);
-			invalidate(); // 清屏
-			break;
-		case MotionEvent.ACTION_MOVE:
-			touch_move(x, y);
-			invalidate();
-			break;
-		case MotionEvent.ACTION_UP:
-			touch_up(x, y);
-			invalidate();
-			break;
-		}
-		return true;
-	}
+        penBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_paint_pen);
+        eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_paint_eraser);
+        mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        savePathList = new ArrayList<DrawPath>();
+        deletePathList = new ArrayList<DrawPath>();
+    }
 
-	private void touch_start(float x, float y) {
-		mPath.reset();// 清空path
-		mPath.moveTo(x, y);
-		mX = x;
-		mY = y;
-		this.isMoving = false;
-	}
+    private void reset() {
+        mBitmap = Bitmap.createBitmap(mBitmapWidth, mBitmapHeight, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap); // 所有mCanvas画的东西都被保存在了mBitmap中
+        mCanvas.drawColor(Color.TRANSPARENT);
+    }
 
-	private void touch_move(float x, float y) {
-		float dx = Math.abs(x - mX);
-		float dy = Math.abs(y - mY);
-		if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-			mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);// 源代码是这样写的，可是我没有弄明白，为什么要这样？
-//			mX = x;
-//			mY = y;
-//			this.isMoving = true;
-		}
-		mX = x;
-		mY = y;
-		this.isMoving = true;
-	}
+    private void resetPaint() {
+        if (mPaintMode == MODE_PEN) {
+            mPaint.setColor(mPaintColor);
+            mPaint.setStrokeWidth(mPaintStrokeWidth);
+        } else {
+            mPaint.setColor(Color.WHITE);
+            mPaint.setStrokeWidth(50);
+        }
+    }
 
-	private void touch_up(float x, float y) {
-		mPath.lineTo(mX, mY);
-		mCanvas.drawPath(mPath, mPaint);
-		savePath.add(dp);
-		mPath = null;
-		this.isMoving = false;
-	}
+    private void touch_start(float x, float y) {
+        mPath = new Path();
+        mDrawPath = new DrawPath();
+        mDrawPath.path = mPath;
+        mDrawPath.paint = mPaint;
+        mPath.reset();// 清空path
+        mPath.moveTo(x, y);
+        mX = x;
+        mY = y;
+        this.isMoving = false;
+    }
 
-	// 初始化画布
-	@SuppressLint("NewApi")
-	public void initCanvas() {
-		// 关闭硬件加速
-//		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    private void touch_move(float x, float y) {
+        float dx = Math.abs(x - mX);
+        float dy = Math.abs(y - mY);
+        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);// 源代码是这样写的，可是我没有弄明白，为什么要这样？
+        }
+        mX = x;
+        mY = y;
+        this.isMoving = true;
+    }
 
-		setPaintStyle();
-		mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-		mBitmapPaint.setAlpha(0);
+    private void touch_up(float x, float y) {
+        mPath.lineTo(mX, mY);
+        mCanvas.drawPath(mPath, mPaint);
+        savePathList.add(mDrawPath);
+        mPath = null;
+        this.isMoving = false;
+    }
 
-		// 画布大小
-		mBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
-		mCanvas = new Canvas(mBitmap); // 所有mCanvas画的东西都被保存在了mBitmap中
+    /**
+     * 设置画笔模式（0：画笔模式，1：擦除模式）
+     *
+     * @param mode
+     */
+    public void setPaintMode(int mode) {
+        mPaintMode = mode;
+        resetPaint();
+    }
 
-		mCanvas.drawColor(Color.TRANSPARENT);
-		mPath = new Path();
-		mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-	}
+    /**
+     * 选择画笔大小
+     *
+     * @param index
+     */
+    public void selectPaintSize(int index) {
+        if (index < 0) {
+            index = 0;
+        }
+        if (index > paintSize.length) {
+            mPaintStrokeWidth = index;
+        } else {
+            mPaintStrokeWidth = paintSize[index];
+        }
+        resetPaint();
+    }
 
-	// 设置画笔样式
-	public void setPaintStyle() {
-		mPaint = new Paint();
-		mPaint.setAntiAlias(true);
-		mPaint.setDither(true);
-		mPaint.setStyle(Paint.Style.STROKE);
-		mPaint.setStrokeJoin(Paint.Join.ROUND);
-		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		if (currentStyle == 1) {
-			mPaint.setStrokeWidth(currentSize);
-			mPaint.setColor(currentColor);
-		} else{
-			mPaint.setColor(Color.WHITE);
-			mPaint.setStrokeWidth(50);
-		}
-	}
+    /**
+     * 自定义画笔尺寸
+     *
+     * @param size
+     */
+    public void setPaintSize(int size) {
+        mPaintStrokeWidth = size;
+        resetPaint();
+    }
 
-	// 获取画笔样式
-	public int getPaintStyle(){
-		return currentStyle;
-	}
+    /**
+     * 选择画笔颜色
+     *
+     * @param index
+     */
+    public void selectPaintColor(int index) {
+        if (index < 0) {
+            index = 0;
+        }
+        if (index > paintColor.length) {
+            mPaintColor = index;
+        } else {
+            mPaintColor = paintColor[index];
+        }
+        resetPaint();
+    }
 
-	// 设置画笔样式
-	public void selectPaintStyle(int which) {
-		if (which == 0) {
-			currentStyle = 1;
-		}else{
-			currentStyle = 2;
-		}
-		setPaintStyle();
-	}
+    /**
+     * 自定义画笔颜色
+     *
+     * @param color
+     */
+    public void setPaintColor(@ColorInt int color) {
+        mPaintColor = color;
+        resetPaint();
+    }
 
-	// 选择画笔大小
-	public void selectPaintSize(int which) {
-		int size = Integer.parseInt(this.getResources().getStringArray(R.array.paintsize)[which]);
-		currentSize = size;
-		setPaintStyle();
-	}
+    /**
+     * 撤销的核心思想就是将画布清空， 将保存下来的Path路径最后一个移除掉， 重新将路径画在画布上面。
+     */
+    public void undo() {
+        if (savePathList != null && savePathList.size() > 0) {
+            // 清空画布
+            reset();
 
-	// 设置画笔颜色
-	public void selectPaintColor(int which) {
-		currentColor = paintColor[which];
-		setPaintStyle();
-	}
+            // 将路径保存列表中的最后一个元素删除 ,并将其保存在路径删除列表中
+            DrawPath drawPath = savePathList.get(savePathList.size() - 1);
+            deletePathList.add(drawPath);
+            savePathList.remove(savePathList.size() - 1);
 
-	/**
-	 * 撤销的核心思想就是将画布清空， 将保存下来的Path路径最后一个移除掉， 重新将路径画在画布上面。
-	 */
-	public void undo() {
-		System.out.println(savePath.size() + "--------------");
-		if (savePath != null && savePath.size() > 0) {
-			// 调用初始化画布函数以清空画布
-			initCanvas();
+            // 将路径保存列表中的路径重绘在画布上
+            Iterator<DrawPath> iter = savePathList.iterator(); // 重复保存
+            while (iter.hasNext()) {
+                DrawPath dp = iter.next();
+                mCanvas.drawPath(dp.path, dp.paint);
+            }
+            invalidate();// 刷新
+        }
+    }
 
-			// 将路径保存列表中的最后一个元素删除 ,并将其保存在路径删除列表中
-			DrawPath drawPath = savePath.get(savePath.size() - 1);
-			deletePath.add(drawPath);
-			savePath.remove(savePath.size() - 1);
+    /**
+     * 恢复的核心思想就是将撤销的路径保存到另外一个列表里面(栈)， 然后从redo的列表里面取出最顶端对象，
+     * 画在画布上面即可
+     */
+    public void redo() {
+        if (deletePathList.size() > 0) {
+            // 将删除的路径列表中的最后一个，也就是最顶端路径取出（栈）,并加入路径保存列表中
+            DrawPath dp = deletePathList.get(deletePathList.size() - 1);
+            savePathList.add(dp);
+            // 将取出的路径重绘在画布上
+            mCanvas.drawPath(dp.path, dp.paint);
+            // 将该路径从删除的路径列表中去除
+            deletePathList.remove(deletePathList.size() - 1);
+            invalidate();
+        }
+    }
 
-			// 将路径保存列表中的路径重绘在画布上
-			Iterator<DrawPath> iter = savePath.iterator(); // 重复保存
-			while (iter.hasNext()) {
-				DrawPath dp = iter.next();
-				mCanvas.drawPath(dp.path, dp.paint);
-			}
-			invalidate();// 刷新
-		}
-	}
+    /**
+     * 清空的主要思想就是初始化画布，将保存路径的两个List清空
+     */
+    public void removeAllPaint() {
+        savePathList.clear();
+        deletePathList.clear();
+        reset();
+        invalidate();
+    }
 
-	/**
-	 * 恢复的核心思想就是将撤销的路径保存到另外一个列表里面(栈)， 然后从redo的列表里面取出最顶端对象， 画在画布上面即可
-	 */
-	public void redo() {
-		if (deletePath.size() > 0) {
-			// 将删除的路径列表中的最后一个，也就是最顶端路径取出（栈）,并加入路径保存列表中
-			DrawPath dp = deletePath.get(deletePath.size() - 1);
-			savePath.add(dp);
-			// 将取出的路径重绘在画布上
-			mCanvas.drawPath(dp.path, dp.paint);
-			// 将该路径从删除的路径列表中去除
-			deletePath.remove(deletePath.size() - 1);
-			invalidate();
-		}
-	}
+    /**
+     * 保存所绘图形，返回绘图文件的存储路径
+     */
+    public String saveBitmap() {
+        // 获得系统当前时间，并以该时间作为文件名
+        String str = UUID.randomUUID().toString() + ".jpg";
+        String paintFilePath = "";
+        File dir = new File(Environment.getExternalStorageDirectory() + "/Paint/");
+        File file = new File(Environment.getExternalStorageDirectory() + "/Paint/", str);
+        if (!dir.exists()) {
+            dir.mkdir();
+        } else {
+            if (file.exists()) {
+                file.delete();
+            }
+        }
 
-	/**
-	 * 清空的主要思想就是初始化画布 将保存路径的两个List清空
-	 */
-	public void removeAllPaint() {
-		// 调用初始化画布函数以清空画布
-		initCanvas();
-		invalidate();// 刷新
-		savePath.clear();
-		deletePath.clear();
-	}
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            paintFilePath = file.getAbsolutePath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return paintFilePath;
+    }
 
-	/**
-	 * 保存所绘图形 返回绘图文件的存储路径
-	 */
-	public String saveBitmap() {
-		// 获得系统当前时间，并以该时间作为文件名
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
-		String str = formatter.format(curDate);
-		String paintPath = "";
-		str = str + "paint.png";
-		File dir = new File(Environment.getExternalStorageDirectory() + "/Paint/");
-		File file = new File(Environment.getExternalStorageDirectory() + "/Paint/", str);
-		if (!dir.exists()) {
-			dir.mkdir();
-		} else {
-			if (file.exists()) {
-				file.delete();
-			}
-		}
-
-		try {
-			FileOutputStream out = new FileOutputStream(file);
-			mBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-			out.flush();
-			out.close();
-			// 保存绘图文件路径
-			paintPath = Environment.getExternalStorageDirectory() + "/Paint/" + str;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return paintPath;
-	}
-
-	// 路径对象
-	class DrawPath {
-		Path path;
-		Paint paint;
-	}
+    // 路径对象
+    class DrawPath {
+        Path path;
+        Paint paint;
+    }
 }

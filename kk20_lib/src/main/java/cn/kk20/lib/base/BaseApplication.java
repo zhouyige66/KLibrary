@@ -126,7 +126,7 @@ public abstract class BaseApplication extends Application implements Application
      *
      * @return
      */
-    public abstract Class<?> getTargetActivity();
+    public abstract Class<? extends Activity> getTargetActivity();
 
     public Activity getCurrentActivity() {
         return currentActivity;
