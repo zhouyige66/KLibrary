@@ -27,8 +27,6 @@ import cn.kk20.lib.widget.CommonLoadingDialog;
  * @Version V1.0.0
  */
 public class BaseActivity extends AutoLayoutActivity implements IBaseView {
-    private View rootView;
-
     protected Logger mLogger = Logger.getLogger(getClass().getSimpleName());
     protected CommonLoadingDialog mLoadingDialog;
 
@@ -38,9 +36,6 @@ public class BaseActivity extends AutoLayoutActivity implements IBaseView {
 
         x.view().inject(this);
         ActivityManager.getInstance().addActivity(this);
-
-        rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-        mLoadingDialog = new CommonLoadingDialog(this);
     }
 
     @Override
@@ -56,9 +51,10 @@ public class BaseActivity extends AutoLayoutActivity implements IBaseView {
 
     @Override
     public void showLoading() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.show();
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new CommonLoadingDialog(this);
         }
+        mLoadingDialog.show();
     }
 
     @Override
@@ -70,7 +66,9 @@ public class BaseActivity extends AutoLayoutActivity implements IBaseView {
 
     @Override
     public void hideSoftInput() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
         imm.hideSoftInputFromInputMethod(rootView.getWindowToken(), 0);
     }
 

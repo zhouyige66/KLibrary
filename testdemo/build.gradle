@@ -1,10 +1,11 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.0'
+    buildToolsVersion "26.0.0"
 
     defaultConfig {
+        applicationId "cn.kk20.test.demo"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -20,8 +21,5 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'org.xutils:xutils:3.3.36'
-    compile 'com.zhy:autolayout:1.4.5'
+    compile project(':kk20_lib')
 }

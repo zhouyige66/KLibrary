@@ -24,7 +24,7 @@ import cn.kk20.lib.base.BaseActivity;
 
 public class PermissionsActivity extends AppCompatActivity {
     public static final int PERMISSIONS_GRANTED = 0; // 权限授权
-    public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
+    public static final int PERMISSIONS_DENIED = 1;  // 权限拒绝
 
     private static final int PERMISSION_REQUEST_CODE = 0; // 系统权限管理页面的参数
     public static final String EXTRA_PERMISSIONS = "permission.extra_permission"; // 权限参数

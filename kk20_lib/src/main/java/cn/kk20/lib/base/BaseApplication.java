@@ -23,7 +23,8 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
  * @Date 2017/5/18
  * @Version V1.0.0
  */
-public abstract class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
+public abstract class BaseApplication extends Application implements
+        Application.ActivityLifecycleCallbacks {
     public static BaseApplication mBaseApplication;
     protected CrashHandler mCrashHandler;
     private Activity currentActivity;
@@ -114,6 +115,10 @@ public abstract class BaseApplication extends Application implements Application
         });
     }
 
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
     /**
      * 是否自动重启
      *
@@ -127,9 +132,5 @@ public abstract class BaseApplication extends Application implements Application
      * @return
      */
     public abstract Class<? extends Activity> getTargetActivity();
-
-    public Activity getCurrentActivity() {
-        return currentActivity;
-    }
 
 }
