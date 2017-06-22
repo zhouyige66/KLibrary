@@ -25,6 +25,8 @@
         <meta-data
             android:name="design_height"
             android:value="1920" />
+
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>
