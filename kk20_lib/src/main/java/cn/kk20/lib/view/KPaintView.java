@@ -31,12 +31,12 @@ import java.util.UUID;
 import cn.kk20.lib.R;
 
 /**
- * @Description 简单绘画图
+ * @Description 可翻页画板
  * @Author kk20
  * @Date 2017/5/15
  * @Version V1.0.0
  */
-public class PaintView extends View {
+public class KPaintView extends View {
     private static final float TOUCH_TOLERANCE = 4;
     private static int[] paintColor = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK,
             Color.YELLOW, Color.CYAN};
@@ -53,7 +53,6 @@ public class PaintView extends View {
 
     private Canvas mCanvas = null;
     private Bitmap mBitmap = null;
-    private Path mPath = null;
     private Paint mBitmapPaint, mPaint;
     private Bitmap penBitmap, eraserBitmap;
     private int mPaintColor = Color.RED;
@@ -65,19 +64,23 @@ public class PaintView extends View {
     private boolean hasMeasured = false;
     private float mX, mY;
     private boolean isMoving = false;
-    private DrawPath mDrawPath;
+    private Path mPath = null;//当前绘画路径
+    private DrawPath mDrawPath;//当前绘画属性
     private ArrayList<DrawPath> savePathList;
     private ArrayList<DrawPath> deletePathList;
 
-    public PaintView(Context c) {
+    //每一页数据集合
+    private ArrayList<PageDrawData>pageDrawDatas;
+
+    public KPaintView(Context c) {
         this(c, null);
     }
 
-    public PaintView(Context c, AttributeSet attrs) {
+    public KPaintView(Context c, AttributeSet attrs) {
         this(c, attrs, 0);
     }
 
-    public PaintView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public KPaintView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         init();
@@ -289,7 +292,7 @@ public class PaintView extends View {
     }
 
     /**
-     * 撤销的核心思想就是将画布清空， 将保存下来的Path路径最后一个移除掉， 重新将路径画在画布上面。
+     * 撤销的核心思想就是将画布清空，将保存下来的Path路径最后一个移除掉，重新将路径画在画布上面。
      */
     public void undo() {
         if (savePathList != null && savePathList.size() > 0) {
@@ -313,7 +316,7 @@ public class PaintView extends View {
 
     /**
      * 恢复的核心思想就是将撤销的路径保存到另外一个列表里面(栈)，
-     * 然后从redo的列表里面取出最顶端对象，画在画布上面即可
+     * 然后从redo的列表里面取出最顶端对象，画在画布上面即可。
      */
     public void redo() {
         if (deletePathList.size() > 0) {
@@ -383,5 +386,12 @@ public class PaintView extends View {
     class DrawPath {
         Path path;
         Paint paint;
+    }
+
+    // 每一页绘图数据
+    class PageDrawData {
+        Bitmap backgroungBitmap;
+        ArrayList<DrawPath> savePathList;
+        ArrayList<DrawPath> deletePathList;
     }
 }
