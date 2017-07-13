@@ -86,18 +86,12 @@ public class PaintView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        Log.i("kk20", "onMeasure量尺寸宽度：" + MeasureSpec.getSize(widthMeasureSpec));
-        Log.i("kk20", "onMeasure量尺寸高度：" + MeasureSpec.getSize(heightMeasureSpec));
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // TODO Auto-generated method stub
         super.onSizeChanged(w, h, oldw, oldh);
-
-        Log.i("kk20", "onSizeChanged量尺寸宽度：" + w);
-        Log.i("kk20", "onSizeChanged量尺寸高度：" + h);
 
         // 暂时这样处理尺寸变化引起的画布重绘问题
         if (!hasMeasured) {
@@ -184,6 +178,15 @@ public class PaintView extends View {
     }
 
     private void resetPaint() {
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setColor(mPaintColor);
+        mPaint.setStrokeWidth(mPaintStrokeWidth);
+
         if (mPaintMode == MODE_PEN) {
             mPaint.setColor(mPaintColor);
             mPaint.setStrokeWidth(mPaintStrokeWidth);
