@@ -22,6 +22,23 @@ class DownloadCallback implements
         this.switchViewHolder(viewHolder);
     }
 
+    private DownloadViewHolder getViewHolder() {
+        if (viewHolderRef == null) return null;
+        DownloadViewHolder viewHolder = viewHolderRef.get();
+        if (viewHolder != null) {
+            DownloadInfo downloadInfo = viewHolder.getDownloadInfo();
+            if (this.downloadInfo != null && this.downloadInfo.equals(downloadInfo)) {
+                return viewHolder;
+            }
+        }
+        return null;
+    }
+
+    private boolean isStopped() {
+        DownloadState state = downloadInfo.getState();
+        return isCancelled() || state.value() > DownloadState.STARTED.value();
+    }
+
     public boolean switchViewHolder(DownloadViewHolder viewHolder) {
         if (viewHolder == null) return false;
 
@@ -43,18 +60,6 @@ class DownloadCallback implements
 
     public void setCancelable(Cancelable cancelable) {
         this.cancelable = cancelable;
-    }
-
-    private DownloadViewHolder getViewHolder() {
-        if (viewHolderRef == null) return null;
-        DownloadViewHolder viewHolder = viewHolderRef.get();
-        if (viewHolder != null) {
-            DownloadInfo downloadInfo = viewHolder.getDownloadInfo();
-            if (this.downloadInfo != null && this.downloadInfo.equals(downloadInfo)) {
-                return viewHolder;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -154,11 +159,6 @@ class DownloadCallback implements
     @Override
     public void onFinished() {
         cancelled = false;
-    }
-
-    private boolean isStopped() {
-        DownloadState state = downloadInfo.getState();
-        return isCancelled() || state.value() > DownloadState.STARTED.value();
     }
 
     @Override
