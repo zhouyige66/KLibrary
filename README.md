@@ -2,13 +2,13 @@
 集合了多种框架的基础库，内置多种工具、视图。
 
 ## 集成
-xUtils:3.3.36
-autolayout:1.4.5
-fastjson:1.1.70.android
-PhotoView:2.0.0
-log4j:1.2.17
-pinyin4j:2.5.0
-universal-image-loader:1.9.5
+* xUtils:3.3.36
+* autolayout:1.4.5
+* fastjson:1.1.70.android
+* PhotoView:2.0.0
+* log4j:1.2.17
+* pinyin4j:2.5.0
+* universal-image-loader:1.9.5
 
 ## 主要功能
 ### 工具封装（Util***系列）
@@ -63,9 +63,6 @@ dependencies {
 ### 代码中使用
 * Application继承BaseApplication。
 * Activity可选择继承BaseActivity。
-```java
-   
-```
 
 ----
 ## 关于作者
