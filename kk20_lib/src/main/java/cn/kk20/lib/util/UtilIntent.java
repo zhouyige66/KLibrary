@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
@@ -29,46 +30,27 @@ import cn.kk20.lib.BuildConfig;
  */
 public class UtilIntent {
 
-    public static File createTempFile(Context context, String dirPath, String fileName) {
-        String path = (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-                ? Environment.getExternalStorageDirectory().getAbsolutePath()
-                : Environment.getDataDirectory().getAbsolutePath()) + "/" + context.getPackageName();
-        if (TextUtils.isEmpty(dirPath)) {
-            path += "/temp";
-        } else {
-            if (dirPath.startsWith("/")) {
-                path += dirPath;
-            } else {
-                path += "/" + dirPath;
-            }
-        }
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(dir, fileName);
-        return file;
-    }
-
-    private static Uri createUri(Context context, File file) {
-        Uri uri = FileProvider.getUriForFile(context,
-                BuildConfig.APPLICATION_ID + ".FileProvider", file);
-        return uri;
-    }
-
     public static Intent createCameraIntent(Context context) {
         String fileName = UUID.randomUUID().toString() + ".jpg";
         return createCameraIntent(context, fileName);
     }
 
-    public static Intent createCameraIntent(Context context, String fileName) {
+    public static Intent createCameraIntent(Context context, @NonNull String fileName) {
         return createCameraIntent(context, null, fileName);
     }
 
-    public static Intent createCameraIntent(Context context, String dirPath, String fileName) {
-        File file = createTempFile(context, dirPath, fileName);
+    public static Intent createCameraIntent(Context context, String dirPath, @NonNull String fileName) {
+        if (!TextUtils.isEmpty(dirPath)) {
+            if (dirPath.endsWith(File.separator)) {
+                fileName = dirPath + fileName;
+            } else {
+                fileName = dirPath + File.separator + fileName;
+            }
+        }
+        String tempFilePath = UtilFile.createTempFile(context, fileName);
+        File file = new File(tempFilePath);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri fileUri = null;
+        Uri fileUri;
         // 判断是否是7.0
         if (Build.VERSION.SDK_INT >= 24) {
             // 适配android7.0 ，不能直接访问原路径，需要对intent 授权
@@ -154,6 +136,12 @@ public class UtilIntent {
         intent.putExtra("fileUri", uri);
         intent.putExtra("filePath", filePath);
         return intent;
+    }
+
+    private static Uri createUri(Context context, File file) {
+        Uri uri = FileProvider.getUriForFile(context,
+                BuildConfig.APPLICATION_ID + ".FileProvider", file);
+        return uri;
     }
 
     private static String handleImageBeforeKitKat(Context context, Uri uri) {

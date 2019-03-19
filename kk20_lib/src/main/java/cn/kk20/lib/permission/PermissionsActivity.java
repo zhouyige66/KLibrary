@@ -40,7 +40,7 @@ public class PermissionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permissions);
 
-        rootView = (LinearLayout) findViewById(R.id.rootView);
+        rootView = findViewById(R.id.rootView);
         int mCurrentOrientation = getResources().getConfiguration().orientation;
         if (mCurrentOrientation == Configuration.ORIENTATION_PORTRAIT) {
             rootView.setBackgroundResource(R.drawable.bg_portrait);
@@ -111,7 +111,7 @@ public class PermissionsActivity extends AppCompatActivity {
             //低版本有可能权限被拒绝了，grantResults依然返回0，再使用权限检查器检查一遍
             if (mChecker.lacksPermissions(getPermissions())) {
                 showMissingPermissionDialog();
-            }else {
+            } else {
                 allPermissionsGranted();
             }
         } else {

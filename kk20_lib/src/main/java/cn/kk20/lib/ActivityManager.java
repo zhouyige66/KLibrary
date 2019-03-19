@@ -71,6 +71,7 @@ public class ActivityManager {
             if (activity.getClass().equals(cls)) {
                 activity.finish();
                 removeActivity(activity);
+                break;
             }
         }
     }

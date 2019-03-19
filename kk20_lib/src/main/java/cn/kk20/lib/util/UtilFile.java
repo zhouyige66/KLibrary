@@ -2,6 +2,7 @@ package cn.kk20.lib.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,8 +29,46 @@ public class UtilFile {
      * 获取SDCard的目录路径功能
      */
     public static String getSDCardPath() {
-        return checkSDCard() ? Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                : Environment.getDataDirectory().getAbsolutePath() + File.separator;
+        String path = checkSDCard() ? Environment.getExternalStorageDirectory().getAbsolutePath()
+                : Environment.getDataDirectory().getAbsolutePath();
+        if (path.endsWith(File.separator)) {
+            return path;
+        }
+        return path + File.separator;
+    }
+
+    /**
+     * 获取临时文件路径
+     *
+     * @param context
+     * @param fileName
+     * @return 应用目录temp文件夹下文件
+     */
+    public static String createTempFile(Context context, String fileName) {
+        String rootPath = getSDCardPath();
+        String tempPath = checkSDCard() ? rootPath + context.getPackageName() + File.separator
+                : rootPath;
+        tempPath += "temp";
+        if (fileName.startsWith(File.separator)) {
+            tempPath += fileName;
+        } else {
+            tempPath += File.separator + fileName;
+        }
+
+        File tempFile = new File(tempPath);
+        File dir = tempFile.getParentFile();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        if (!tempFile.exists()) {
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return tempFile.getAbsolutePath();
     }
 
     /**
@@ -38,9 +77,15 @@ public class UtilFile {
      * @param filePath
      * @return 文件夹完整路径
      */
-    public static String mkdir2SDCard(String filePath) {
+    public static String mkdir2SDCard(@NonNull String filePath) {
         String rootPath = getSDCardPath();
-        File dir = new File(rootPath + filePath);
+        String dirPath;
+        if (filePath.startsWith(File.separator)) {
+            dirPath = rootPath + filePath.substring(1);
+        } else {
+            dirPath = rootPath + filePath;
+        }
+        File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -55,7 +100,8 @@ public class UtilFile {
      * @param content
      * @throws Exception
      */
-    public static void save2SDCard(String filePath, String fileName, String content) throws Exception {
+    public static void save2SDCard(String filePath, String fileName, String content)
+            throws Exception {
         // 从API中获取SDCard的路径，解决各种Android系统的兼容性问题
         String path = mkdir2SDCard(filePath);
         // 创建文件
@@ -71,14 +117,15 @@ public class UtilFile {
      * 保存数据到指定文件
      *
      * @param context
-     * @param fileName
+     * @param fileName 文件名（全路径）
      * @param content
      * @throws Exception
      */
     public static void save(Context context, String fileName, String content) throws Exception {
         // 利用javaIO实现文件的保存
         FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-        outStream.write(content.getBytes());// 向文件中写入数据，将字符串转换为字节
+        // 向文件中写入数据，将字符串转换为字节
+        outStream.write(content.getBytes());
         outStream.close();
     }
 

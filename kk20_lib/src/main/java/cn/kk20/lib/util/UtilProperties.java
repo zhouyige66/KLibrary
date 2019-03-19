@@ -12,10 +12,10 @@ import java.util.Properties;
  * Properties工具类
  */
 public class UtilProperties {
-    static final String CONFIG_FILE = "config";	//文件名
+    static final String CONFIG_FILE = "config";    //文件名
     private Context mContext;
 
-    public UtilProperties(Context context){
+    public UtilProperties(Context context) {
         this.mContext = context;
     }
 
@@ -28,15 +28,15 @@ public class UtilProperties {
         return config;
     }
 
-    public void write(Properties config) throws IOException{
+    public void write(Properties config) throws IOException {
         createFile();
         FileOutputStream fos = mContext.openFileOutput(CONFIG_FILE, Context.MODE_PRIVATE);
         config.store(fos, null);
         fos.close();
     }
 
-    void createFile() throws IOException{
-        File file = new File(mContext.getFilesDir(),CONFIG_FILE);
+    void createFile() throws IOException {
+        File file = new File(mContext.getFilesDir(), CONFIG_FILE);
         if (!file.exists()) {
             file.createNewFile();
         }

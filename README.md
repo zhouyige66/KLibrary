@@ -16,7 +16,8 @@
 * 加密工具UtilEncrypt。
 * 文件工具UtilFile，检测SD卡是否可用，创建文件。
 * 网络请求工具UtilHttp，主要提供get、post和文件上传功能。
-* Logcat工具UtilLog.
+* Intent工具UtilIntent，主要提供获取拍照、获取图片裁剪、获取调用相册的Intent。
+* Logcat工具UtilLog。
 * MD5加密工具UtilMD5与UtilMD5File。
 * 网络状态检测工具UtilNetwork，网络是否可用检测，IP地址获取，MAC地址获取等。
 * 获取Android设备Id工具UtilPhoneId，获取imei、imsi、AndroidId、SerialNumber，6.0以上需要手工授权（android.Manifest.permission.READ_PHONE_STATE）。

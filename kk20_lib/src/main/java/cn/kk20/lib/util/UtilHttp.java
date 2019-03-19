@@ -23,8 +23,7 @@ public class UtilHttp {
     }
 
     public RequestParams getParams(String url, String jsonStr) {
-        RequestParams params = new RequestParams(url);
-        params.setConnectTimeout(30 * 1000);// 30s请求时间
+        RequestParams params = getParams(url);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonStr);
         return params;

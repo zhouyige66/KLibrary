@@ -11,15 +11,6 @@ import java.util.ArrayList;
  */
 public class UtilTextJustification {
 
-    public static void justify(TextView textView, float contentWidth) {
-        String text = textView.getText().toString();
-        Paint paint = textView.getPaint();
-
-        ArrayList<String> lineList = lineBreak(text, paint, contentWidth);
-
-        textView.setText(TextUtils.join(" ", lineList).replaceFirst("\\s", ""));
-    }
-
     private static ArrayList<String> lineBreak(String text, Paint paint, float contentWidth) {
         String[] wordArray = text.split("\\s");
         ArrayList<String> lineList = new ArrayList<String>();
@@ -29,7 +20,8 @@ public class UtilTextJustification {
             if (paint.measureText(myText + " " + word) <= contentWidth)
                 myText = myText + " " + word;
             else {
-                int totalSpacesToInsert = (int) ((contentWidth - paint.measureText(myText)) / paint.measureText(" "));
+                int totalSpacesToInsert =
+                        (int) ((contentWidth - paint.measureText(myText)) / paint.measureText(" "));
                 lineList.add(justifyLine(myText, totalSpacesToInsert));
                 myText = word;
             }
@@ -60,4 +52,12 @@ public class UtilTextJustification {
 
         return justifiedText;
     }
+
+    public static void justify(TextView textView, float contentWidth) {
+        String text = textView.getText().toString();
+        Paint paint = textView.getPaint();
+        ArrayList<String> lineList = lineBreak(text, paint, contentWidth);
+        textView.setText(TextUtils.join(" ", lineList).replaceFirst("\\s", ""));
+    }
+
 }
