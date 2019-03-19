@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Propertiees工具类
+ * Properties工具类
  */
-public class IPropertieesUtils {
+public class UtilProperties {
     static final String CONFIG_FILE = "config";	//文件名
     private Context mContext;
 
-    public IPropertieesUtils(Context context){
+    public UtilProperties(Context context){
         this.mContext = context;
     }
 

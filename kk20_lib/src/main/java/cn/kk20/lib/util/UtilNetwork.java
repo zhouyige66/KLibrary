@@ -14,7 +14,7 @@ import java.util.Enumeration;
 /**
  * 网络检测工具类
  */
-public class INetworkUtils {
+public class UtilNetwork {
 
     /**
      * 检查网络是否可用

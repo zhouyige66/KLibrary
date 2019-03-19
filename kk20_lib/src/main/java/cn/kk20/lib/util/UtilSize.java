@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * 尺寸转换工具类
  */
-public class ISizeUtil {
+public class UtilSize {
 
     public static int dp2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

@@ -8,8 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 
 /**
- * 检查权限的工具类
- * Created by kk20 on 2016/11/15.
+ * @Description: 检查权限的工具类
+ * @Author: kk20
+ * @Date: 2016/11/15 15:07
+ * @Version: v1.0
  */
 public class PermissionsChecker {
     private Context mContext;
@@ -39,7 +41,7 @@ public class PermissionsChecker {
     // 判断是否缺少权限
     private boolean lacksPermission(String permission) {
         // For Android < Android M, self permissions are always granted.
-        boolean result = false;
+        boolean result;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             result = mContext.checkSelfPermission(permission)
                     == PackageManager.PERMISSION_DENIED;

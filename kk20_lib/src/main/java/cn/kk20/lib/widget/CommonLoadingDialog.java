@@ -30,7 +30,7 @@ public class CommonLoadingDialog extends Dialog {
 
     public void init(Context c) {
         View dialogView = LayoutInflater.from(c).inflate(R.layout.layout_dialog_loading, null);
-        mTextView = (TextView) dialogView.findViewById(R.id.tv_msg);
+        mTextView =  dialogView.findViewById(R.id.tv_msg);
         setContentView(dialogView);
         setCanceledOnTouchOutside(false);
     }

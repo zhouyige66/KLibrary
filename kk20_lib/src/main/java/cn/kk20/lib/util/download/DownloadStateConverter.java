@@ -22,4 +22,5 @@ public class DownloadStateConverter implements ColumnConverter<DownloadState> {
     public ColumnDbType getColumnDbType() {
         return ColumnDbType.INTEGER;
     }
+
 }

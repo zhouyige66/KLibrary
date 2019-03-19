@@ -21,8 +21,8 @@ import java.io.File;
 import java.math.BigDecimal;
 
 import cn.kk20.lib.R;
-import cn.kk20.lib.util.IToastUtil;
-import cn.kk20.lib.util.IHttpUtils;
+import cn.kk20.lib.util.UtilToast;
+import cn.kk20.lib.util.UtilHttp;
 import cn.kk20.lib.widget.CommonLoadingDialog;
 import cn.kk20.lib.widget.CommonTipDialog;
 
@@ -80,16 +80,16 @@ public class CheckUpdateUtil {
         }
 
         if (checkUpdateUrl == null || checkUpdateUrl.equals("")) {
-            IToastUtil.toast("检查更新地址不能为空");
+            UtilToast.toast("检查更新地址不能为空");
             return;
         }
 
-        IHttpUtils httpUtils = new IHttpUtils();
+        UtilHttp httpUtils = new UtilHttp();
         RequestParams params = httpUtils.getParams(checkUpdateUrl);
         params.addParameter("code", versionCode);
         params.addParameter("packageName", mContext.getPackageName());
         params.setConnectTimeout(60 * 1000);
-        httpUtils.doPost(params, "检查更新", new IHttpUtils.IHttpRequestCallback() {
+        httpUtils.doPost(params, "检查更新", new UtilHttp.IHttpRequestCallback() {
             @Override
             public void onHttpRequestSuccess(String result) {
                 if (isShowLoadingDialog) {
@@ -108,7 +108,7 @@ public class CheckUpdateUtil {
                         showUpdateDialog();
                     } else {
                         if (isShowLoadingDialog) {
-                            IToastUtil.toast("您当前版本已经是最新的！");
+                            UtilToast.toast("您当前版本已经是最新的！");
                         }
                     }
                 } catch (JSONException e) {
@@ -120,7 +120,7 @@ public class CheckUpdateUtil {
             public void onHttpRequestError(String msg) {
                 if (isShowLoadingDialog) {
                     loadingDialog.dismiss();
-                    IToastUtil.toast("获取最新版本信息出错：" + msg);
+                    UtilToast.toast("获取最新版本信息出错：" + msg);
                 }
 
             }
@@ -151,7 +151,7 @@ public class CheckUpdateUtil {
 
     public void downloadApk() {
         if (apkDownloadUrl == null || apkDownloadUrl.equals("")) {
-            IToastUtil.toast("下载地址为空，无法下载应用");
+            UtilToast.toast("下载地址为空，无法下载应用");
             return;
         }
 

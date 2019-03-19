@@ -22,9 +22,9 @@ import cn.kk20.lib.view.ScreenShotView;
 /**
  * 截图演示工具类
  */
-public class ICaptureUtils {
+public class UtilCapture {
     private Activity mActivity;
-    private View captureView = LayoutInflater.from(mActivity).inflate(R.layout.layout_capture, null);
+    private View captureView;
     private ScreenShotView mScreenShotView;
     private LinearLayout mLinearLayout;
     private Button btn_left, btn_right;
@@ -37,7 +37,7 @@ public class ICaptureUtils {
 
     private boolean captureViewHasAdd = false;
 
-    public ICaptureUtils(Activity activity) {
+    public UtilCapture(Activity activity) {
         super();
 
         this.mActivity = activity;
@@ -46,7 +46,8 @@ public class ICaptureUtils {
 
     private void init() {
         bitmapSavePath = Environment.getExternalStorageDirectory() + "/test.png";
-
+        
+        captureView = LayoutInflater.from(mActivity).inflate(R.layout.layout_capture, null);
         mScreenShotView = (ScreenShotView) captureView.findViewById(R.id.v_capture);
         mLinearLayout = (LinearLayout) captureView.findViewById(R.id.ll_capture_operation);
         btn_left = (Button) captureView.findViewById(R.id.btn_left);
@@ -60,7 +61,7 @@ public class ICaptureUtils {
                 btn_right.setText("截取全屏");
                 captureView.setVisibility(View.GONE);
                 if (captureHideListener != null) {
-                    captureHideListener.captureHideCallbak();
+                    captureHideListener.captureHideCallback();
                 }
             }
         });
@@ -139,7 +140,7 @@ public class ICaptureUtils {
         mScreenShotView.setVisibility(View.VISIBLE);
         captureView.setVisibility(View.GONE);
         if (captureHideListener != null) {
-            captureHideListener.captureHideCallbak();
+            captureHideListener.captureHideCallback();
         }
     }
 
@@ -161,7 +162,7 @@ public class ICaptureUtils {
      * 截图图层隐藏
      */
     public interface CaptureHideListener {
-        void captureHideCallbak();
+        void captureHideCallback();
     }
 
 }

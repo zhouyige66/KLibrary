@@ -13,7 +13,7 @@ import java.io.File;
 
 import cn.kk20.lib.exception.CrashHandler;
 import cn.kk20.lib.exception.CrashTipActivity;
-import cn.kk20.lib.util.IFileUtils;
+import cn.kk20.lib.util.UtilFile;
 import cn.kk20.lib.permission.PermissionsChecker;
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
@@ -76,7 +76,7 @@ public abstract class BaseApplication extends Application implements
     }
 
     private void initLog4j() {
-        String path = IFileUtils.mkdir2SDCard(this.getPackageName() + File.separator + "log");
+        String path = UtilFile.mkdir2SDCard(this.getPackageName() + File.separator + "log");
 
         LogConfigurator logConfigurator = new LogConfigurator();
         logConfigurator.setFileName(path + "log.txt");

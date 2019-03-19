@@ -15,13 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 
 import cn.kk20.lib.R;
-import cn.kk20.lib.base.BaseActivity;
 
 /**
- * 授权页面
- * Created by kk20 on 2016/11/15.
+ * @Description: 授权页面
+ * @Author: kk20
+ * @Date: 2016/11/15 15:06
+ * @Version: v1.0
  */
-
 public class PermissionsActivity extends AppCompatActivity {
     public static final int PERMISSIONS_GRANTED = 0; // 权限授权
     public static final int PERMISSIONS_DENIED = 1;  // 权限拒绝

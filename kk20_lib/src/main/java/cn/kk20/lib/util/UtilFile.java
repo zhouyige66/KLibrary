@@ -15,10 +15,10 @@ import java.util.zip.ZipFile;
 /**
  * 文件工具类
  */
-public class IFileUtils {
+public class UtilFile {
 
     /**
-     * 检验SDcard状态
+     * 检验SDCard状态
      */
     public static boolean checkSDCard() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
@@ -40,15 +40,11 @@ public class IFileUtils {
      */
     public static String mkdir2SDCard(String filePath) {
         String rootPath = getSDCardPath();
-        if (rootPath != null) {
-            File dir = new File(rootPath + filePath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            return dir.getAbsolutePath();
+        File dir = new File(rootPath + filePath);
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
-
-        return null;
+        return dir.getAbsolutePath();
     }
 
     /**
@@ -62,15 +58,13 @@ public class IFileUtils {
     public static void save2SDCard(String filePath, String fileName, String content) throws Exception {
         // 从API中获取SDCard的路径，解决各种Android系统的兼容性问题
         String path = mkdir2SDCard(filePath);
-        if (path != null) {
-            // 创建文件
-            File file = new File(path, fileName);
-            // 新建一个文件的输出流
-            FileOutputStream outStream = new FileOutputStream(file);
-            outStream.write(content.getBytes());
-            // 关掉这个流
-            outStream.close();
-        }
+        // 创建文件
+        File file = new File(path, fileName);
+        // 新建一个文件的输出流
+        FileOutputStream outStream = new FileOutputStream(file);
+        outStream.write(content.getBytes());
+        // 关掉这个流
+        outStream.close();
     }
 
     /**

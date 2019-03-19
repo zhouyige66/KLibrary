@@ -35,10 +35,10 @@ public class CommonTipDialog extends Dialog {
 
     public void init(Context c) {
         View dialogView = LayoutInflater.from(c).inflate(R.layout.layout_dialog_default, null);
-        tv_title = (TextView) dialogView.findViewById(R.id.tv_title);
-        tv_msg = (TextView) dialogView.findViewById(R.id.tv_msg);
-        btn_left = (Button) dialogView.findViewById(R.id.btn_left);
-        btn_right = (Button) dialogView.findViewById(R.id.btn_right);
+        tv_title = dialogView.findViewById(R.id.tv_title);
+        tv_msg = dialogView.findViewById(R.id.tv_msg);
+        btn_left = dialogView.findViewById(R.id.btn_left);
+        btn_right = dialogView.findViewById(R.id.btn_right);
         tv_title.setVisibility(View.GONE);
         tv_msg.setText("正在处理，请稍后...");
 

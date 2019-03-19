@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 /**
  * 普通MD5加密工具类
  */
-public class IMD5Util {
+public class UtilMD5 {
 	// 十六进制下数字到字符的映射数组
 	private static String[] hexDigits = { "0", "1", "2", "3", "4", "5", "6", "7",
 			"8", "9", "a", "b", "c", "d", "e", "f" };

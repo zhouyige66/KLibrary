@@ -14,7 +14,7 @@ import cn.kk20.lib.base.BaseApplication;
 /**
  * 网络请求工具类
  */
-public class IHttpUtils {
+public class UtilHttp {
 
     public RequestParams getParams(String url) {
         RequestParams params = new RequestParams(url);
@@ -38,23 +38,23 @@ public class IHttpUtils {
      * @param callback 请求回调
      */
     public void doPost(RequestParams params, final String tipMsg, final IHttpRequestCallback callback) {
-        if (!INetworkUtils.isNetworkEnable(BaseApplication.mBaseApplication)) {
+        if (!UtilNetwork.isNetworkEnable(BaseApplication.mBaseApplication)) {
             Toast.makeText(BaseApplication.mBaseApplication, "网络不可用", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (params.isAsJsonContent()) {
-            ILogUtils.i(tipMsg + "--->请求地址：" + params.getUri());
-            ILogUtils.i(tipMsg + "--->请求参数：" + params.getBodyContent());
+            UtilLog.i(tipMsg + "--->请求地址：" + params.getUri());
+            UtilLog.i(tipMsg + "--->请求参数：" + params.getBodyContent());
         } else {
-            ILogUtils.i(tipMsg + "--->请求地址：" + params);
+            UtilLog.i(tipMsg + "--->请求地址：" + params);
         }
         x.http().post(params, new Callback.CommonCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
                 // 这里对重复登录等情况进行处理
-                ILogUtils.i(tipMsg + "--->返回结果：" + result);
+                UtilLog.i(tipMsg + "--->返回结果：" + result);
                 if (callback != null) {
                     callback.onHttpRequestSuccess(result);
                 }
@@ -63,7 +63,7 @@ public class IHttpUtils {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 // 统一提示错我信息：tipMsg:ex.getMessage
-                ILogUtils.i(tipMsg + "--->出错:" + ex.toString());
+                UtilLog.i(tipMsg + "--->出错:" + ex.toString());
                 if (callback != null) {
                     callback.onHttpRequestError(ex.getMessage());
                 }

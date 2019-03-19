@@ -13,6 +13,8 @@ public interface IBaseView {
 
     void showLoading();
 
+    void showLoading(String loadingText);
+
     void hideLoading();
 
     void hideSoftInput();

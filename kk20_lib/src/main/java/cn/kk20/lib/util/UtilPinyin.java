@@ -5,7 +5,7 @@ import net.sourceforge.pinyin4j.PinyinHelper;
 /**
  * 拼音工具类
  */
-public class IPinyinUtil {
+public class UtilPinyin {
     /**
      * 提取每个汉字的首字母(大写)
      *

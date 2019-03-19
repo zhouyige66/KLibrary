@@ -12,7 +12,7 @@ import javax.crypto.spec.PBEParameterSpec;
 /**
  * 加密工具类
  */
-public class IEncryptUtil {
+public class UtilEncrypt {
     /**
      * JAVA6支持以下任意一种算法 PBEWITHMD5ANDDES PBEWITHMD5ANDTRIPLEDES
      * PBEWITHSHAANDDESEDE PBEWITHSHA1ANDRC2_40 PBKDF2WITHHMACSHA1

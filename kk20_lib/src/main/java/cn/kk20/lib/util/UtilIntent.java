@@ -1,4 +1,4 @@
-package cn.sxw.kt.student.util;
+package cn.kk20.lib.util;
 
 import android.annotation.TargetApi;
 import android.content.ContentUris;
@@ -18,7 +18,8 @@ import android.text.TextUtils;
 import java.io.File;
 import java.util.UUID;
 
-import cn.sxw.kt.student.BuildConfig;
+import cn.kk20.lib.BuildConfig;
+
 
 /**
  * @Description
@@ -26,7 +27,7 @@ import cn.sxw.kt.student.BuildConfig;
  * @Date 2017/11/8
  * @Version V1.0.0
  */
-public class IntentUtil {
+public class UtilIntent {
 
     public static File createTempFile(Context context, String dirPath, String fileName) {
         String path = (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)

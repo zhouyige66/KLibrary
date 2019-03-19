@@ -8,7 +8,7 @@ import java.util.TimeZone;
 /**
  * 日期格式装换工具类
  */
-public class ITimeUtil {
+public class UtilTime {
 
 	public static String time2String(long time) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

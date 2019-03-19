@@ -5,11 +5,11 @@ import android.util.Log;
 /**
  * Log工具类
  */
-public class ILogUtils {
+public class UtilLog {
     public static boolean isDebug = true;// 是否需要打印bug，可以在application的onCreate函数里面初始化
     private static final String TAG = "kk20";
 
-    private ILogUtils() {
+    private UtilLog() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }

@@ -9,7 +9,7 @@ import android.text.TextUtils;
 /**
  * 获取android设备唯一标识
  */
-public class IPhoneIdUtil {
+public class UtilPhoneId {
 
     /**
      * 获取手机IMEI号（国际移动设备身份码）

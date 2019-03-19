@@ -54,7 +54,20 @@ public class BaseActivity extends AutoLayoutActivity implements IBaseView {
         if (mLoadingDialog == null) {
             mLoadingDialog = new CommonLoadingDialog(this);
         }
-        mLoadingDialog.show();
+        if (!mLoadingDialog.isShowing()) {
+            mLoadingDialog.show();
+        }
+    }
+
+    @Override
+    public void showLoading(@NonNull String loadingText) {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new CommonLoadingDialog(this);
+        }
+        mLoadingDialog.setMessage(loadingText);
+        if (!mLoadingDialog.isShowing()) {
+            mLoadingDialog.show();
+        }
     }
 
     @Override

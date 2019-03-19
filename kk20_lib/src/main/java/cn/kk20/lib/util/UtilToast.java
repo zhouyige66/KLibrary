@@ -7,10 +7,10 @@ import org.xutils.x;
 /**
  * Toast统一管理类
  */
-public class IToastUtil {
+public class UtilToast {
     private static Toast toast;
 
-    private IToastUtil() {
+    private UtilToast() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
