@@ -56,14 +56,15 @@ repositories {
 	...
 	maven { url 'https://jitpack.io' }
 }
+// Latest release为最新release版本
 dependencies {
-	implementation 'com.github.zhouyige66:KLibrary:1.0.4'
+	implementation 'com.github.zhouyige66:KLibrary:Latest release'
 }
 ```
 
 ### 代码中使用
 * Application继承BaseApplication。
-* Activity可选择继承BaseActivity。
+* Activity可选择继承BaseActivity，需要在AndroidManifest配置文件中配置design_width和design_height。
 
 ----
 ## 关于作者

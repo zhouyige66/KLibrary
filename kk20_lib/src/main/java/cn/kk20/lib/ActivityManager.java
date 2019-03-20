@@ -4,8 +4,6 @@ import android.app.Activity;
 
 import java.util.Stack;
 
-import cn.kk20.lib.util.UtilLog;
-
 /**
  * Description: 应用程序Activity管理类
  * Author: kk20
@@ -48,12 +46,9 @@ public class ActivityManager {
      * @param activity
      */
     public void removeActivity(Activity activity) {
-        UtilLog.d("移除前：" + activityStack.size());
         if (activity != null && activityStack.contains(activity)) {
             activityStack.remove(activity);
         }
-
-        UtilLog.d("移除后：" + activityStack.size());
     }
 
     /**

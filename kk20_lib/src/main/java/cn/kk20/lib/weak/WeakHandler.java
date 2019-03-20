@@ -1,6 +1,5 @@
 package cn.kk20.lib.weak;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
