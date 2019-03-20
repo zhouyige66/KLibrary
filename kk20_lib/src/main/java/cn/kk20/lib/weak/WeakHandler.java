@@ -12,24 +12,26 @@ import java.lang.ref.WeakReference;
  * @Date 2017/8/9
  * @Version V1.0.0
  */
-public abstract class WeakHandler extends Handler {
-    private WeakReference<Context> wr;
+public final class WeakHandler extends Handler {
+    private WeakReference<MessageHandler> wr;
 
     private WeakHandler() {
 
     }
 
-    public WeakHandler(Context context) {
-        wr = new WeakReference<>(context);
+    public WeakHandler(MessageHandler handler) {
+        wr = new WeakReference<>(handler);
     }
 
     @Override
     public void handleMessage(Message msg) {
         if (wr.get() != null) {
-            handle(msg);
+            wr.get().handle(msg);
         }
     }
 
-    public abstract void handle(Message msg);
+    public interface MessageHandler {
+        void handle(Message msg);
+    }
 
 }
